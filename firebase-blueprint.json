@@ -1,0 +1,166 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Student or Admin Profile document",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "nickname": { "type": "string" },
+        "email": { "type": "string" },
+        "role": { "type": "string", "enum": ["student", "teacher", "admin"] },
+        "xp": { "type": "number" },
+        "level": { "type": "number" },
+        "rankTitle": { "type": "string" },
+        "streak": { "type": "number" },
+        "longestStreak": { "type": "number" },
+        "lastActiveDate": { "type": "string" },
+        "totalQuestionsAnswered": { "type": "number" },
+        "totalCorrectAnswers": { "type": "number" },
+        "gardenPlants": { "type": "number" },
+        "organismStage": { "type": "number" },
+        "unlockedSecretLab": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" },
+        "schemaVersion": { "type": "number" }
+      },
+      "required": ["id", "nickname", "role", "xp", "level", "rankTitle", "schemaVersion"]
+    },
+    "XpLedgerEntry": {
+      "title": "XpLedgerEntry",
+      "description": "Append-only immutable record of an XP event",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "source": { "type": "string", "enum": ["quiz", "daily", "streak", "achievement", "bonus"] },
+        "amount": { "type": "number" },
+        "description": { "type": "string" },
+        "referenceId": { "type": "string" },
+        "timestamp": { "type": "string" },
+        "schemaVersion": { "type": "number" }
+      },
+      "required": ["id", "userId", "source", "amount", "timestamp", "schemaVersion"]
+    },
+    "QuizAttempt": {
+      "title": "QuizAttempt",
+      "description": "Record of a completed or ongoing quiz attempt",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "quizType": { "type": "string", "enum": ["tahsili", "post_unit", "daily", "secret_lab"] },
+        "category": { "type": "string" },
+        "startedAt": { "type": "number" },
+        "completedAt": { "type": "number" },
+        "completed": { "type": "boolean" },
+        "score": { "type": "number" },
+        "accuracy": { "type": "number" },
+        "totalQuestions": { "type": "number" },
+        "correctCount": { "type": "number" },
+        "xpEarned": { "type": "number" },
+        "schemaVersion": { "type": "number" }
+      },
+      "required": ["id", "userId", "quizType", "startedAt", "completed", "schemaVersion"]
+    },
+    "UserAchievement": {
+      "title": "UserAchievement",
+      "description": "Unlocked badge or achievement for user",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "achievementId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "icon": { "type": "string" },
+        "unlockedAt": { "type": "string" },
+        "xpReward": { "type": "number" },
+        "schemaVersion": { "type": "number" }
+      },
+      "required": ["id", "achievementId", "title", "unlockedAt", "schemaVersion"]
+    },
+    "Question": {
+      "title": "Question",
+      "description": "Curated biology question",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "text": { "type": "string" },
+        "options": { "type": "array" },
+        "correctAnswer": { "type": "number" },
+        "explanation": { "type": "string" },
+        "category": { "type": "string", "enum": ["bio1", "bio2", "ecology"] },
+        "categoryLabel": { "type": "string" },
+        "unit": { "type": "string" },
+        "difficulty": { "type": "string", "enum": ["easy", "medium", "hard"] },
+        "type": { "type": "string", "enum": ["tahsili", "post_unit", "daily", "secret_lab"] },
+        "status": { "type": "string", "enum": ["published", "draft"] },
+        "isDeleted": { "type": "boolean" },
+        "schemaVersion": { "type": "number" }
+      },
+      "required": ["id", "text", "options", "correctAnswer", "category", "unit", "difficulty", "schemaVersion"]
+    },
+    "LeaderboardEntry": {
+      "title": "LeaderboardEntry",
+      "description": "Public ranking card displaying nickname and academic stats only",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "nickname": { "type": "string" },
+        "rankTitle": { "type": "string" },
+        "level": { "type": "number" },
+        "xp": { "type": "number" },
+        "streak": { "type": "number" },
+        "gardenPlants": { "type": "number" },
+        "organismStage": { "type": "number" },
+        "badgesCount": { "type": "number" },
+        "rank": { "type": "number" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["userId", "nickname", "xp", "level", "rankTitle"]
+    },
+    "LeaderboardSnapshot": {
+      "title": "LeaderboardSnapshot",
+      "description": "Immutable historical leaderboard snapshot for term/month/week",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "periodType": { "type": "string", "enum": ["week", "month", "term"] },
+        "periodKey": { "type": "string" },
+        "createdAt": { "type": "string" },
+        "rankings": { "type": "array" }
+      },
+      "required": ["id", "periodType", "periodKey", "createdAt", "rankings"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "#/entities/UserProfile" },
+      "description": "Individual student or administrator profile"
+    },
+    "/users/{userId}/xpLedger/{ledgerId}": {
+      "schema": { "$ref": "#/entities/XpLedgerEntry" },
+      "description": "Append-only immutable log of every XP transaction"
+    },
+    "/users/{userId}/quizAttempts/{attemptId}": {
+      "schema": { "$ref": "#/entities/QuizAttempt" },
+      "description": "Student quiz attempt records"
+    },
+    "/users/{userId}/userAchievements/{achievementId}": {
+      "schema": { "$ref": "#/entities/UserAchievement" },
+      "description": "Unlocked achievements for this user"
+    },
+    "/questions/{questionId}": {
+      "schema": { "$ref": "#/entities/Question" },
+      "description": "Central repository of biology questions"
+    },
+    "/leaderboardSummary/{periodKey}": {
+      "schema": { "$ref": "#/entities/LeaderboardSnapshot" },
+      "description": "Active cached summaries and historical leaderboard snapshots"
+    },
+    "/dailyQuestions/{dateKey}": {
+      "schema": { "$ref": "#/entities/Question" },
+      "description": "Daily battle question state and participation statistics"
+    }
+  }
+}

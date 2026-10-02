@@ -1,0 +1,8 @@
+{
+  "name": "BioSphere - المنصة التفاعلية لتعليم الأحياء",
+  "description": "منصة تعليمية تفاعلية ثانوية لمادة الأحياء: استكشاف، تحدي، إنجازات، واختبارات تحصيلية بنظام تلعيب وتجربة بصرية فريدة.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

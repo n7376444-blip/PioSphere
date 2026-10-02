@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --primary: #2EC4C6;
+    --primary-light: #6FE3E8;
+    --secondary: #7CC6F2;
+    --aqua: #4FB3D9;
+    --bg-cream: #FAF8F2;
+    --bg-white: #FFFFFF;
+    --text-slate: #1F3A4A;
+    --emerald: #1FA97A;
+    --plant: #6CC04A;
+    --gold: #E7B94A;
+    --lavender-subtle: #E9E4F7;
+  }
+
+  body {
+    font-family: 'IBM Plex Sans Arabic', 'Tajawal', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-cream);
+    color: var(--text-slate);
+    direction: rtl;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(46, 196, 198, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(46, 196, 198, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(46, 196, 198, 0.45);
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow: 0 0 20px -5px rgba(46, 196, 198, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 32px 2px rgba(111, 227, 232, 0.4);
+  }
+}
+
+.glow-breathing {
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+@keyframes dnaRotate {
+  0% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-4px) rotate(3deg); }
+  100% { transform: translateY(0px) rotate(0deg); }
+}
+
+.animate-dna-gentle {
+  animation: dnaRotate 6s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

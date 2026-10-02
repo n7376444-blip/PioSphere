@@ -1,0 +1,37 @@
+{
+  "users": {},
+  "sessions": {},
+  "questions": {},
+  "attempts": {},
+  "auditLogs": [
+    {
+      "id": "log-init",
+      "adminEmail": "system",
+      "adminNickname": "النظام",
+      "action": "system_ready",
+      "details": "تمت تهيئة منصة BioSphere ببنك أسئلة نقي ولوحة شرف عادلة 100% للطلاب الحقيقيين.",
+      "timestamp": "2026-10-02T12:00:00.000Z"
+    }
+  ],
+  "settings": {
+    "xpValues": {
+      "correct": 10,
+      "completeQuiz": 50,
+      "score80": 30,
+      "perfectScore": 100,
+      "dailyLogin": 5,
+      "streak7": 50
+    },
+    "rankThresholds": [
+      { "level": 1, "title": "طالب مستجد", "minXp": 0, "badge": "🌱" },
+      { "level": 2, "title": "مساعد باحث", "minXp": 150, "badge": "🔬" },
+      { "level": 3, "title": "باحث حيوي", "minXp": 400, "badge": "🧫" },
+      { "level": 4, "title": "عالم أحياء ناشئ", "minXp": 900, "badge": "🧬" },
+      { "level": 5, "title": "مستكشف الأحياء", "minXp": 1700, "badge": "🌿" },
+      { "level": 6, "title": "خبير الأنظمة الحيوية", "minXp": 3000, "badge": "🧠" },
+      { "level": 7, "title": "عالم الجينوم", "minXp": 5000, "badge": "🧬" },
+      { "level": 8, "title": "عالم المستقبل", "minXp": 8000, "badge": "🌎" }
+    ]
+  },
+  "dailyState": {}
+}

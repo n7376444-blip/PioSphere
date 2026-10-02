@@ -1,0 +1,66 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && request.auth.token.email == 'n7376444@gmail.com';
+    }
+
+    // User Profile
+    match /users/{userId} {
+      allow read: if isOwner(userId) || isAdmin();
+      allow create: if isOwner(userId);
+      // XP must never decrease; prevents tampering
+      allow update: if (isOwner(userId) && (!('xp' in resource.data) || request.resource.data.xp >= resource.data.xp)) || isAdmin();
+      allow delete: if isAdmin();
+
+      // XP Ledger (Append-only)
+      match /xpLedger/{ledgerId} {
+        allow read: if isOwner(userId) || isAdmin();
+        allow create: if isOwner(userId) && request.resource.data.amount > 0;
+        allow update, delete: if false; // Strictly immutable append-only
+      }
+
+      // Quiz Attempts
+      match /quizAttempts/{attemptId} {
+        allow read: if isOwner(userId) || isAdmin();
+        allow create, update: if isOwner(userId) || isAdmin();
+        allow delete: if isAdmin();
+      }
+
+      // Achievements (Once unlocked, immutable)
+      match /userAchievements/{achievementId} {
+        allow read: if isOwner(userId) || isAdmin();
+        allow create: if isOwner(userId) || isAdmin();
+        allow update, delete: if false;
+      }
+    }
+
+    // Curated Question Bank
+    match /questions/{questionId} {
+      allow read: if isAuthenticated();
+      allow write: if isAdmin();
+    }
+
+    // Leaderboard Summaries & Historical Snapshots
+    match /leaderboardSummary/{periodKey} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+
+    // Daily Questions
+    match /dailyQuestions/{dateKey} {
+      allow read: if isAuthenticated();
+      allow write: if isAuthenticated();
+    }
+  }
+}
